@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Host Player</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <h1>Welcome</h1>
+    <p>Let's get this party started</p>
+
+    <iframe id="anchor"></iframe>
+    <script src="../node_modules/socket.io-client/dist/socket.io.js"></script>
+    <script>
+      const $anchor = document.getElementById('anchor')
+      const socket = io();
+      socket.emit('up', 'up')
+      socket.on('msg', (payload) => {
+        console.log(`Server says: ${payload}`)
+      })
+      socket.on('video', (video) => {
+        console.log(video)
+        $anchor.src = 'https://www.youtube.com/v/' + video;
+      })
+    </script>
+  </body>
+</html>
