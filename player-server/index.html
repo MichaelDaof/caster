@@ -30,7 +30,7 @@
       })
       .then(json => {
         const cleanJSON = JSON.parse(json);
-        const url = `${cleanJSON}/yt/{some youtube video code}`
+        const url = `"${cleanJSON}:3001/yt/{some youtube video id}"`
         $ip.innerText = url;
       })
     </script>
