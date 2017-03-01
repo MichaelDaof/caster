@@ -4,23 +4,48 @@
     <title>Host Player</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+      @import url('https://fonts.googleapis.com/css?family=Roboto');
+      html {
+        font-family: 'Roboto'
+      }
+    </style>
   </head>
   <body>
     <h1>Welcome</h1>
-    <p>Let's get this party started</p>
+    <div>
+      On your client computer, punch in this URL: <h3 id="ip"></h3>
+    </div>
 
     <iframe id="anchor"></iframe>
+
+
     <script src="../node_modules/socket.io-client/dist/socket.io.js"></script>
     <script>
-      const $anchor = document.getElementById('anchor')
+      // Grabs local ip
+      const $ip = document.getElementById('ip')
+      fetch('http://localhost:3001/getIp')
+      .then(res => {
+        return res.json()
+      })
+      .then(json => {
+        const cleanJSON = JSON.parse(json);
+        const url = `${cleanJSON}/yt/{some youtube video code}`
+        $ip.innerText = url;
+      })
+    </script>
+    <script>
+      const $iframe = document.getElementById('anchor')
+      $iframe.height = window.innerHeight;
+      $iframe.width = window.innerWidth;
       const socket = io();
       socket.emit('up', 'up')
       socket.on('msg', (payload) => {
         console.log(`Server says: ${payload}`)
       })
-      socket.on('video', (video) => {
-        console.log(video)
-        $anchor.src = 'https://www.youtube.com/v/' + video;
+      socket.on('video', (videoSrc) => {
+        console.log(videoSrc)
+        $iframe.src = videoSrc;
       })
     </script>
   </body>
